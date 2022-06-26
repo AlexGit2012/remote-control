@@ -18,13 +18,20 @@
 
 * App served @ `http://localhost:8080` without nodemon
 
+
+**Build**
+
+`npm run build`
+
+* Build a current app using tsc
+
 ---
 
 **All commands**
 
 Command | Description
 --- | ---
-`npm run build` | Build current app using tsc
+`npm run build` | Build a current app using tsc
 `npm run start` | App served @ `http://localhost:8080` without nodemon
 `npm run start:dev` | App served @ `http://localhost:8080` with nodemon
 
