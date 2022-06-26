@@ -46,7 +46,7 @@ export const drawHandler = async (command, wsConnection, firstValue, secondValue
             break;
         }
     }
-    duplexWsStream.write(messageForClient, (error) => {
+    duplexWsStream.write(messageForClient + '\0', (error) => {
         if (error) {
             console.log(error);
         }

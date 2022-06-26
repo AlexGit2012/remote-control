@@ -17,7 +17,7 @@ const HTTP_PORT = 3000;
 console.log(`Start static http server on the ${HTTP_PORT} port!`);
 httpServer.listen(HTTP_PORT);
 wss.on('connection', (wsConnection) => {
-    console.log('Socket works!');
+    console.log(`Socket works, connection with client`);
     const duplexWsStream = createWebSocketStream(wsConnection, {
         encoding: 'utf8',
         decodeStrings: false,
@@ -47,7 +47,7 @@ wss.on('connection', (wsConnection) => {
                     break;
                 }
                 default: {
-                    console.log('incorrect entity');
+                    console.log('Incorrect entity');
                     break;
                 }
             }

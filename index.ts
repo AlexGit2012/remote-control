@@ -25,7 +25,7 @@ console.log(`Start static http server on the ${HTTP_PORT} port!`);
 httpServer.listen(HTTP_PORT);
 
 wss.on('connection', (wsConnection: WebSocket) => {
-    console.log('Socket works!');
+    console.log(`Socket works, connection with client`);
 
     const duplexWsStream = createWebSocketStream(wsConnection, {
         encoding: 'utf8',

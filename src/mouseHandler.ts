@@ -35,7 +35,7 @@ export const mouseHandler = async (
             break;
         }
     }
-    duplexWsStream.write(messageForClient, (error: Error) => {
+    duplexWsStream.write(messageForClient + '\0', (error: Error) => {
         if (error) {
             console.log(error);
         }
