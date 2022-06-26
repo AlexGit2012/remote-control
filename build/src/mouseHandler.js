@@ -1,6 +1,6 @@
 import robot from 'robotjs';
-export const mouseHandler = (command, wsConnection, firstValue, duplexWsStream) => {
-    const { x, y } = robot.getMousePos();
+export const mouseHandler = async (command, wsConnection, firstValue, duplexWsStream) => {
+    const { x, y } = await robot.getMousePos();
     let messageForClient = 'mouse_' + command;
     switch (command) {
         case 'left': {
@@ -20,7 +20,7 @@ export const mouseHandler = (command, wsConnection, firstValue, duplexWsStream) 
             break;
         }
         case 'position': {
-            messageForClient = `mouse_position ${x},${y}\0`;
+            messageForClient = `mouse_position ${x},${y}`;
             break;
         }
         default: {

@@ -4,10 +4,20 @@ import robot from 'robotjs';
 import WebSocket, { createWebSocketStream, WebSocketServer } from 'ws';
 import { mouseHandler } from './src/mouseHandler.js';
 import { drawHandler } from './src/drawHandler.js';
+import { prntHandler } from './src/prntHandler.js';
 
 const wss = new WebSocketServer({
     port: 8080,
 });
+
+const wssCloseConnection = () => {
+    process.stdout.write('Closing websocket...\n');
+    wss.close();
+    process.exit();
+};
+
+process.on('SIGINT', wssCloseConnection);
+process.on('SIGKILL', wssCloseConnection);
 
 const HTTP_PORT: number = 3000;
 
@@ -22,31 +32,40 @@ wss.on('connection', (wsConnection: WebSocket) => {
         decodeStrings: false,
     });
 
-    wsConnection.on('message', (data) => {
-        console.log('received: %s', data);
+    try {
+        wsConnection.on('close', () => {
+            console.log(`Connection closed`);
+        });
 
-        const dataArr = data.toString().split(' ');
-        const operation = dataArr[0];
-        const [entity, command] = operation.split('_');
-        const firstValue = dataArr[1];
-        const secondValue = dataArr[2];
+        wsConnection.on('message', (data) => {
+            console.log('received: %s', data);
 
-        switch (entity) {
-            case 'mouse': {
-                mouseHandler(command, wsConnection, firstValue, duplexWsStream);
-                break;
+            const dataArr = data.toString().split(' ');
+            const operation = dataArr[0];
+            const [entity, command] = operation.split('_');
+            const firstValue = dataArr[1];
+            const secondValue = dataArr[2];
+
+            switch (entity) {
+                case 'mouse': {
+                    mouseHandler(command, wsConnection, firstValue, duplexWsStream);
+                    break;
+                }
+                case 'draw': {
+                    drawHandler(command, wsConnection, firstValue, secondValue, duplexWsStream);
+                    break;
+                }
+                case 'prnt': {
+                    prntHandler(command, wsConnection, duplexWsStream);
+                    break;
+                }
+                default: {
+                    console.log('Incorrect entity');
+                    break;
+                }
             }
-            case 'draw': {
-                drawHandler(command, wsConnection, firstValue, secondValue, duplexWsStream);
-                break;
-            }
-            case 'prnt': {
-                break;
-            }
-            default: {
-                console.log('incorrect entity');
-                break;
-            }
-        }
-    });
+        });
+    } catch (error: any) {
+        wsConnection.close();
+    }
 });
