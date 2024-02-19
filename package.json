@@ -5,15 +5,22 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./index.js",
-    "start:dev": "nodemon ./index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./dist/bundle.cjs",
+    "start:dev": "nodemon ./dist/bundle.cjs",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --watch"
   },
   "author": "Alexey Karavaychik",
   "keywords": [],
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "dotenv-webpack": "^8.0.1",
+    "nodemon": "^2.0.16",
+    "nodemon-webpack-plugin": "^4.8.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "ws": "^8.8.0"
