@@ -44,6 +44,8 @@ const config = {
   stats: {
     errorDetails: true,
   },
+  // Added externals to handle warnings related to buffer utils
+  externals: [{ bufferutil: "bufferutil", "utf-8-validate": "utf-8-validate" }],
 };
 
 if (isProduction) {

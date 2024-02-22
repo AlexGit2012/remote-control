@@ -4,8 +4,6 @@
     "module": "es6",
     "moduleResolution": "node",
     "rootDir": ".",
-    "outDir": "dist",
-    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "alwaysStrict": true,
@@ -16,8 +14,8 @@
     "noUnusedParameters": true,
     "noImplicitAny": false,
     "noImplicitThis": false,
-    "strictNullChecks": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   },
   "include": ["src/**/*", "index.ts"]
 }
