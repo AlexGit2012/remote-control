@@ -1,12 +1,15 @@
 import { TUser } from "../types/types";
+import { cloneObj } from "../utils/utils";
 
 let users: TUser[] = [];
 
 export const getUsers = (): TUser[] => users;
 
 export const addUser = (user: TUser) => {
-  if (!findUser(user)) {
-    users.push(user);
+  const newUser = cloneObj(user);
+  if (!newUser.wins) newUser.wins = 0;
+  if (!findUser(newUser)) {
+    users.push(newUser);
   }
 };
 

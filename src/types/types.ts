@@ -21,7 +21,6 @@ export type TUserInRoom = {
 export type TRoom = {
   roomId: number;
   roomUsers: TUserInRoom[];
-  isRoomAvailable: boolean;
 };
 
 export enum EServerOperations {

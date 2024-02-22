@@ -5,12 +5,15 @@ import { auth } from "./src/utils/authUtils";
 import { createRegObj } from "./src/utils/utilsForSend";
 import { regErrors } from "./src/error/regErrors";
 import { addUser, getUserIndex } from "./src/database/users";
-import { getRooms } from "./src/database/rooms";
 import { EClientOperations, WebSocketWithID } from "./src/types/types";
+import { addUserToRoom, createRoom } from "./src/database/rooms";
+import wssUtilsCreator from "./src/utils/wsUtils";
 
 const wss = new WebSocketServer({
   port: 3000,
 });
+
+const { updateRoom, updateWinners } = wssUtilsCreator(wss);
 
 const wssCloseConnection = () => {
   process.stdout.write("Closing websocket...\n");
@@ -42,7 +45,7 @@ wss.on("connection", (ws: WebSocketWithID) => {
       case EClientOperations.REG:
         const user = cloneObj(data);
         const isAuthenticated = auth(user);
-        let regObjForSend = {};
+        let regObjForSend: string;
         if (isAuthenticated) {
           regObjForSend = createRegObj(user);
         } else if (isAuthenticated === null) {
@@ -52,15 +55,19 @@ wss.on("connection", (ws: WebSocketWithID) => {
           regObjForSend = createRegObj(user, true, regErrors.authError);
         }
         console.log("objForSend", JSON.stringify(regObjForSend));
-        ws.send(JSON.stringify(regObjForSend));
+        ws.send(regObjForSend);
         ws.id = getUserIndex(user); // ws.id the same as user index in database
-        ws.send(
-          JSON.stringify({
-            type: "update_room",
-            data: JSON.stringify(getRooms()),
-            id: 0,
-          })
-        );
+        updateRoom();
+        updateWinners();
+        break;
+      case EClientOperations.CREATE_ROOM:
+        createRoom(ws.id);
+        updateRoom();
+        break;
+      case EClientOperations.ADD_TO_ROOM:
+        const { indexRoom } = cloneObj(data);
+        addUserToRoom(indexRoom, ws.id);
+        updateRoom();
         break;
       default:
         break;
