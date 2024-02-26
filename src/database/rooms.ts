@@ -5,19 +5,33 @@ let rooms: TRoom[] = [];
 
 export const getRooms = (): TRoom[] => rooms;
 
-export const createRoom = (id: number) => {
-  const userName = getUsers()[id].name;
+export const createRoom = () => {
+  const roomId = rooms.length;
   rooms.push({
-    roomId: rooms.length,
-    roomUsers: [{ name: userName, index: id }],
+    roomId,
+    roomUsers: [],
   });
+  return roomId;
 };
 
 export const addUserToRoom = (roomID: number, wsID: number) => {
   const room = rooms[roomID];
   if (room.roomUsers.some((user) => user.name === getUsers()[wsID].name)) {
-    console.log("Can't add because user already in the room");
   } else room.roomUsers.push({ name: getUsers()[wsID].name, index: wsID });
 };
 
-export const updateRoom = () => {};
+export const getRoomByUserId = (userId: number): TRoom => {
+  const rooms = getRooms();
+  const room = rooms.find((room) =>
+    room.roomUsers.some((user) => user.index === userId)
+  );
+  return room || ({} as TRoom);
+};
+
+export const closeRoom = (roomId: number) => {
+  const rooms = getRooms();
+  rooms[roomId].roomUsers = [
+    { name: "", index: -1 },
+    { name: "", index: -1 },
+  ];
+};

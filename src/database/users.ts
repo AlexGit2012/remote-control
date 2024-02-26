@@ -27,8 +27,17 @@ export const findUser = (user: TUser) => {
   return users.find(({ name }) => name === userName);
 };
 
+export const findUserById = (userId: number) => {
+  return users[userId];
+};
+
 export const getUserIndex = (user: TUser) => {
   return users.findIndex(({ name }) => name === user.name);
 };
 
 export const isUserExists = (user: TUser) => !!findUser(user);
+
+export const updateUserWins = (userId: number) => {
+  const user = findUserById(userId);
+  user.wins ? (user.wins += 1) : (user.wins = 1);
+};
