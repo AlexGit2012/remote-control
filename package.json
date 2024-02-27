@@ -5,10 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./dist/bundle.cjs",
-    "start:dev": "nodemon ./dist/bundle.cjs",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --watch"
+    "start": "webpack && node ./dist/bundle.cjs",
+    "start:dev": "webpack --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Alexey Karavaychik",
   "keywords": [],
